@@ -1,0 +1,73 @@
+{
+  "info": {
+    "name": "Mock API Platform",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8000" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Register",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/auth/register",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"dev@example.com\",\"password\":\"secret123\",\"name\":\"Dev\"}"
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"dev@example.com\",\"password\":\"secret123\"}"
+        }
+      }
+    },
+    {
+      "name": "Create Mock API",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/api/mock-apis",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\":\"Users\",\"method\":\"GET\",\"path\":\"/users/{id}\",\"visibility\":\"public\",\"auth_mode\":\"none\",\"versions\":[{\"version\":\"v1\",\"response_delay_ms\":100,\"request_schema\":{\"query_schema\":{\"type\":\"object\"}},\"response_templates\":[{\"scenario\":\"success\",\"status_code\":200,\"body\":{\"id\":123,\"name\":\"Ada\"},\"is_default\":true},{\"scenario\":\"not-found\",\"status_code\":404,\"body\":{\"error\":\"User not found\"},\"is_default\":false}]}]}"
+        }
+      }
+    },
+    {
+      "name": "Execute Dynamic Mock",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/mock/users/123"
+      }
+    },
+    {
+      "name": "Execute Error Scenario",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/mock/users/123?scenario=not-found"
+      }
+    },
+    {
+      "name": "Dashboard Summary",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{baseUrl}}/api/dashboard/summary"
+      }
+    }
+  ]
+}
